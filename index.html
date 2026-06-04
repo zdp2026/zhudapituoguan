@@ -1,0 +1,2616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大皮托管 - 专业Web托管服务</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #2563eb;
+            --primary-blue-dark: #1e40af;
+            --primary-blue-light: #3b82f6;
+            --accent-cyan: #06b6d4;
+            --bg-cream: #fefce8;
+            --bg-cream-light: #fef9c3;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --text-light: #94a3b8;
+            --white: #ffffff;
+            --success-green: #22c55e;
+            --warning-yellow: #f59e0b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 浏览器检查页面 */
+        #browserCheckPage {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #browserCheckPage.show {
+            display: flex;
+        }
+
+        .browser-check-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .browser-check-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .browser-check-card h2 {
+            color: #1e293b;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .browser-check-card p {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .browser-check-tips {
+            background: #fef3c7;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .browser-check-tips h4 {
+            color: #92400e;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .browser-check-tips ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .browser-check-tips li {
+            color: #b45309;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .browser-check-tips li:last-child {
+            margin-bottom: 0;
+        }
+
+        .browser-check-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .browser-check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* 语言切换按钮 - 折叠圆形样式 */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1500;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .lang-toggle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .lang-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary-blue);
+            transition: fill 0.3s ease;
+        }
+
+        .lang-menu {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-menu.show {
+            display: flex;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .lang-btn {
+            padding: 10px 16px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background: transparent;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .lang-btn:hover {
+            background: #f1f5f9;
+            color: var(--text-dark);
+        }
+
+        .lang-btn.active {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .lang-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* 页面切换动画 */
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .page.hidden {
+            display: none;
+        }
+
+        /* ========== 首页样式 ========== */
+        .page1 {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 50%, #1e3a8a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page1::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .page1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) { width: 80px; height: 80px; top: 20%; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 120px; height: 120px; top: 60%; right: 15%; animation-delay: 3s; }
+        .shape:nth-child(3) { width: 60px; height: 60px; bottom: 20%; left: 20%; animation-delay: 6s; }
+        .shape:nth-child(4) { width: 100px; height: 100px; top: 30%; right: 25%; animation-delay: 9s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--primary-blue-light));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-2xl);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .hero-icon svg { width: 60px; height: 60px; fill: white; }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .page1 h1 {
+            color: var(--white);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.02em;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .page1 .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: 400;
+            margin-bottom: 50px;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .start-btn {
+            position: relative;
+            background: var(--white);
+            color: var(--primary-blue);
+            border: none;
+            padding: 20px 60px;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-weight: 700;
+            border-radius: 60px;
+            cursor: pointer;
+            box-shadow: var(--shadow-xl), 0 0 0 0 rgba(255, 255, 255, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 1s ease-out 0.4s both;
+            overflow: hidden;
+        }
+
+        .start-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: var(--shadow-2xl), 0 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .start-btn:hover::before { left: 100%; }
+
+        .start-btn:active { transform: translateY(-2px) scale(0.98); }
+
+        /* ========== 收藏引导页面 ========== */
+        .page-favorite {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        .favorite-card {
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: var(--shadow-2xl);
+            padding: 50px 30px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .favorite-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, var(--warning-yellow), #f97316);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bounce 1s ease infinite;
+        }
+
+        .favorite-icon svg { width: 50px; height: 50px; fill: white; }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .favorite-card h2 {
+            color: var(--text-dark);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .favorite-card p {
+            color: var(--text-gray);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        /* 用户协议页面样式 */
+        .page-favorite {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .page-favorite .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .agreement-card {
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: var(--shadow-2xl);
+            padding: 40px;
+            text-align: center;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .agreement-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .agreement-icon svg { 
+            width: 40px; 
+            height: 40px; 
+            fill: white; 
+        }
+
+        .agreement-card h2 {
+            color: var(--text-dark);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .agreement-desc {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .agreement-content {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .agreement-section {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .agreement-section:hover {
+            background: #f1f5f9;
+            transform: translateX(5px);
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .section-body h4 {
+            color: var(--text-dark);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .section-body p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .section-body ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .section-body li {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        .disclaimer-preview {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .disclaimer-preview h4 {
+            color: var(--text-dark);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .disclaimer-preview p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .disclaimer-preview ul {
+            margin: 0;
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .disclaimer-preview li {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        .shortcut-box {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .shortcut-box p {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .shortcut-key {
+            display: inline-flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .key {
+            background: var(--primary-blue);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+        }
+
+        .hint-text {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            margin-top: 15px;
+        }
+
+        .continue-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            color: white;
+            border: none;
+            padding: 16px 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .continue-btn.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .continue-btn.enabled:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .status-dot.completed {
+            background: var(--success-green);
+            box-shadow: 0 0 10px var(--success-green);
+        }
+
+        .status-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        /* ========== 第二页样式 ========== */
+        .page2 {
+            background: linear-gradient(180deg, var(--bg-cream) 0%, var(--bg-cream-light) 100%);
+            padding: 60px 20px;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            width: 100%;
+            max-width: 900px;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .main-card {
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .card-header h2 {
+            color: var(--white);
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .card-header p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+        }
+
+        .card-body { padding: 40px 30px; }
+
+        .email-section { margin-bottom: 40px; }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-title .icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-blue-light), var(--accent-cyan));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .section-title .icon svg { width: 24px; height: 24px; fill: white; }
+
+        .section-title h3 {
+            color: var(--text-dark);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .email-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+            padding: 25px 30px;
+            border-radius: 16px;
+            border: 2px solid #bfdbfe;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .email-box:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .email-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-blue);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .email-icon svg { width: 28px; height: 28px; fill: white; }
+
+        .email-text { flex: 1; }
+
+        .email-label {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        .email-address {
+            color: var(--primary-blue);
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        /* 邮箱快捷访问按钮 */
+        .email-shortcuts {
+            margin-top: 25px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 16px;
+            border: 1px solid #bae6fd;
+        }
+
+        .shortcuts-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .shortcuts-title svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--primary-blue);
+        }
+
+        .shortcuts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .email-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 16px;
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .email-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-blue-light);
+        }
+
+        .email-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .email-btn svg {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        .email-btn.qq-email svg { fill: #12B7F5; }
+        .email-btn.wangyi163-email svg { fill: #D43C33; }
+        .email-btn.wangyi126-email svg { fill: #E6162D; }
+        .email-btn.gmail-email svg { fill: #EA4335; }
+        .email-btn.outlook-email svg { fill: #0078D4; }
+
+        .email-btn.qq-email:hover { border-color: #12B7F5; background: #f0f9ff; }
+        .email-btn.wangyi163-email:hover { border-color: #D43C33; background: #fef2f2; }
+        .email-btn.wangyi126-email:hover { border-color: #E6162D; background: #fef2f2; }
+        .email-btn.gmail-email:hover { border-color: #EA4335; background: #fef2f2; }
+        .email-btn.outlook-email:hover { border-color: #0078D4; background: #eff6ff; }
+
+
+            font-size: 1rem;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e293b;
+        }
+
+
+        }
+
+
+            text-align: center;
+        }
+
+        .format-section { margin-bottom: 40px; }
+
+        .format-box {
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .format-header {
+            background: #f1f5f9;
+            padding: 15px 25px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .format-header span {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .format-content { padding: 25px; }
+
+        .format-line {
+            display: flex;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .format-line:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .format-label {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .format-value {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .format-placeholder {
+            color: var(--primary-blue);
+            background: #eff6ff;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .notice-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 16px;
+            padding: 30px;
+            border: 2px solid #fcd34d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notice-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, #f59e0b, #d97706);
+        }
+
+        .notice-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .notice-icon {
+            width: 36px;
+            height: 36px;
+            background: #f59e0b;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notice-icon svg { width: 22px; height: 22px; fill: white; }
+
+        .notice-header h4 {
+            color: #92400e;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .notice-list { 
+            list-style: none; 
+            padding: 0;
+            margin: 0;
+        }
+
+        .notice-list li {
+            position: relative;
+            color: #78350f;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 14px;
+            padding-left: 28px;
+            word-break: break-word;
+        }
+
+        .notice-list li:last-child { 
+            margin-bottom: 0; 
+        }
+
+        .notice-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: #f59e0b;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .notice-list li code {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: #92400e;
+            border: 1px solid #fcd34d;
+            margin: 2px 0;
+            word-break: break-all;
+        }
+
+        .footer-thanks {
+            text-align: center;
+            margin-top: 30px;
+            padding: 25px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .footer-thanks p {
+            color: var(--text-gray);
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .footer-thanks .heart {
+            color: #ef4444;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--white);
+            color: var(--primary-blue);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 100;
+            opacity: 0;
+            transform: translateX(-20px);
+            pointer-events: none;
+        }
+
+        .back-btn.visible {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .back-btn svg { width: 24px; height: 24px; fill: currentColor; }
+
+        /* ========== 弹窗样式 ========== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: var(--shadow-2xl);
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--success-green), #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-icon svg { width: 45px; height: 45px; fill: white; }
+
+        .modal h3 {
+            color: var(--text-dark);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .modal p {
+            color: var(--text-gray);
+            font-size: 1rem;
+        }
+
+        .modal-close-btn {
+            margin-top: 25px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ========== 管理员分享页面 ========== */
+        .admin-page {
+            background: #1e293b;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .admin-header h2 {
+            color: var(--white);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .admin-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .file-input-section {
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .file-input-section label {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .file-input {
+            width: calc(100% - 120px);
+            padding: 14px 18px;
+            border: 2px solid #475569;
+            border-radius: 12px;
+            background: #334155;
+            color: var(--white);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .file-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .file-input::placeholder {
+            color: #64748b;
+        }
+
+        .file-access-btn {
+            width: 100px;
+            padding: 14px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .file-add-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .file-list-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .file-card {
+            background: #334155;
+            border-radius: 16px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .file-card:hover {
+            background: #475569;
+            border-color: var(--primary-blue-light);
+            transform: translateX(5px);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--primary-blue);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-icon svg { width: 25px; height: 25px; fill: white; }
+
+        .file-name {
+            color: var(--white);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .file-size {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .file-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-card .arrow {
+            color: var(--text-light);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .delete-btn {
+            padding: 8px 16px;
+            background: #dc2626;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+            transform: translateY(-1px);
+        }
+
+        .file-card:hover .arrow {
+            color: var(--primary-blue-light);
+            transform: translateX(5px);
+        }
+
+        .copy-url-section {
+            margin-top: 30px;
+            background: #334155;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .copy-url-section label {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 15px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            border-radius: 10px;
+            color: var(--white);
+            font-size: 1rem;
+            font-family: monospace;
+            margin-bottom: 15px;
+        }
+
+        .copy-btn {
+            width: 100%;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-blue-dark);
+            transform: translateY(-2px);
+        }
+
+        .copy-btn.copied {
+            background: var(--success-green);
+        }
+
+        /* 免责声明弹窗 */
+        .disclaimer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .disclaimer-modal.show { display: flex; }
+
+        .disclaimer-content {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: var(--shadow-2xl);
+            animation: scaleIn 0.3s ease;
+        }
+
+        .disclaimer-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+            padding: 25px 30px;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .disclaimer-header svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--white);
+        }
+
+        .disclaimer-header h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .disclaimer-body {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: 50vh;
+        }
+
+        .disclaimer-section {
+            margin-bottom: 25px;
+        }
+
+        .disclaimer-section:last-child { margin-bottom: 0; }
+
+        .disclaimer-section h4 {
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .disclaimer-section h4::before {
+            content: '•';
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+
+        .disclaimer-section p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .disclaimer-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .disclaimer-section li {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .disclaimer-section li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary-blue-light);
+        }
+
+        .disclaimer-footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .disclaimer-btn {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .disclaimer-btn.cancel {
+            background: #f1f5f9;
+            color: var(--text-gray);
+        }
+
+        .disclaimer-btn.cancel:hover {
+            background: #e2e8f0;
+        }
+
+        .disclaimer-btn.agree {
+            background: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .disclaimer-btn.agree:hover {
+            background: var(--primary-blue-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* 收藏页面同意复选框 */
+        .agree-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .agree-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .agree-checkbox label {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            cursor: pointer;
+        }
+
+        .agree-checkbox label a {
+            color: var(--primary-blue);
+            text-decoration: underline;
+        }
+
+        .agree-checkbox label a:hover {
+            color: var(--primary-blue-dark);
+        }
+
+        /* ========== 响应式设计 ========== */
+        @media (max-width: 768px) {
+            .page2 { padding: 40px 15px; }
+            .card-header { padding: 30px 20px; }
+            .card-body { padding: 30px 20px; }
+            .email-box { flex-direction: column; text-align: center; }
+            .format-line { flex-direction: column; gap: 5px; }
+            .format-label { width: auto; }
+            .notice-card { padding: 20px; }
+            .favorite-card { padding: 40px 20px; }
+            .email-shortcuts { padding: 20px; }
+            .shortcuts-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            .hero-icon { width: 80px; height: 80px; margin-bottom: 25px; }
+            .hero-icon svg { width: 48px; height: 48px; }
+            .start-btn { padding: 18px 50px; }
+            .back-btn { width: 45px; height: 45px; top: 15px; left: 15px; }
+            .key { padding: 10px 16px; font-size: 0.9rem; }
+            .shortcuts-grid { grid-template-columns: 1fr; }
+            .email-btn { padding: 12px 14px; font-size: 0.9rem; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary-blue-light), var(--primary-blue));
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--primary-blue), var(--primary-blue-dark));
+        }
+    </style>
+</head>
+<body>
+    <!-- 浏览器检查页面 -->
+    <div id="browserCheckPage">
+        <div class="browser-check-card">
+            <div class="browser-check-icon">🚫</div>
+            <h2>浏览器不支持</h2>
+            <p>检测到您正在使用微信、QQ等软件的内置浏览器访问本网站。</p>
+            <div class="browser-check-tips">
+                <h4>请使用以下浏览器访问：</h4>
+                <ul>
+                    <li>Chrome（推荐）</li>
+                    <li>Safari</li>
+                    <li>Edge</li>
+                    <li>Firefox</li>
+                </ul>
+            </div>
+            <button class="browser-check-btn" onclick="handleBrowserCheckClose()">我知道了</button>
+        </div>
+    </div>
+
+    <!-- 语言切换按钮 - 折叠圆形样式 -->
+    <div class="lang-switch">
+        <button class="lang-toggle" id="langToggle" onclick="toggleLangMenu()">
+            <svg viewBox="0 0 24 24">
+                <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+            </svg>
+        </button>
+        <div class="lang-menu" id="langMenu">
+            <button class="lang-btn active" id="langZh" onclick="switchLanguage('zh')">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+                </svg>
+                中文
+            </button>
+            <button class="lang-btn" id="langEn" onclick="switchLanguage('en')">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/>
+                </svg>
+                English
+            </button>
+        </div>
+    </div>
+
+    <!-- 返回按钮 -->
+    <button class="back-btn" id="backBtn" onclick="showPage1()">
+        <svg viewBox="0 0 24 24">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+    </button>
+
+    <!-- 首页 -->
+    <div class="page page1" id="page1">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="hero-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.07 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                </svg>
+            </div>
+            <h1>大皮托管，值得信赖</h1>
+            <p class="subtitle">专业的Web托管服务，让您的网站稳定运行</p>
+            <button class="start-btn" onclick="showFavoritePage()">开始托管</button>
+        </div>
+    </div>
+
+    <!-- 用户协议页面 -->
+    <div class="page page-favorite hidden" id="pageFavorite">
+        <div class="container">
+            <div class="agreement-card">
+                <div class="agreement-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h2>用户协议与免责声明</h2>
+                <p class="agreement-desc">在使用本托管服务前，请仔细阅读并同意以下条款</p>
+                
+                <div class="agreement-content">
+                    <div class="agreement-section">
+                        <div class="section-icon">📋</div>
+                        <div class="section-body">
+                            <h4>服务性质</h4>
+                            <p>本网站完全用于个人开发者之间的技术交流，属于非盈利性质的开源项目。旨在帮助开发者无需注册多个云托管账户即可获得免费的子域名托管服务。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="agreement-section">
+                        <div class="section-icon">📝</div>
+                        <div class="section-body">
+                            <h4>使用限制</h4>
+                            <ul>
+                                <li>所有托管服务仅限个人学习使用，严禁用于商业用途</li>
+                                <li>用户承诺不会传播盗版内容或违法信息</li>
+                                <li>用户承诺不会将托管服务占为己有</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="agreement-section">
+                        <div class="section-icon">🔍</div>
+                        <div class="section-body">
+                            <h4>内容审核</h4>
+                            <p>若提交的网页内容包含商业政治敏感信息、盗版软件、色情内容或违规商业营销等禁止性内容，本网站有权立即拒绝提供服务并删除相关内容。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="agree-checkbox">
+                    <input type="checkbox" id="agreeCheckbox">
+                    <label for="agreeCheckbox">
+                        我已仔细阅读并同意<a href="javascript:void(0)" onclick="showDisclaimer()">《网站用户协议与免责声明》</a>
+                    </label>
+                </div>
+                
+                <button class="continue-btn" id="continueBtn" onclick="handleContinue()">继续托管</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第二页 -->
+    <div class="page page2 hidden" id="page2">
+        <div class="content-wrapper">
+            <div class="main-card">
+                <div class="card-header">
+                    <h2>请提交以下内容</h2>
+                    <p>按照以下格式发送邮件即可完成托管申请</p>
+                </div>
+                
+                <div class="card-body">
+                    <div class="email-section">
+                        <div class="section-title">
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
+                            </div>
+                            <h3>发送至邮箱</h3>
+                        </div>
+                        <div class="email-box" id="emailBox">
+                            <div class="email-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                </svg>
+                            </div>
+                            <div class="email-text">
+                                <div class="email-label">收件人地址</div>
+                                <div class="email-address" id="emailAddress">3862035628@qq.com</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 邮箱快捷访问 -->
+                        <div class="email-shortcuts">
+                            <div class="shortcuts-title">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+                                </svg>
+                                <span>快捷访问邮箱</span>
+                            </div>
+                            <div class="shortcuts-grid">
+                                <a href="https://mail.qq.com/" target="_blank" class="email-btn qq-email">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 13.79c-.15.15-.31.3-.47.45-.25.23-.53.43-.82.61-.53.33-1.12.58-1.75.75-.63.17-1.29.26-1.95.26-.66 0-1.32-.09-1.95-.26-.63-.17-1.22-.42-1.75-.75-.29-.18-.57-.38-.82-.61-.16-.15-.32-.3-.47-.45-.15-.15-.15-.38 0-.53.15-.15.38-.15.53 0 .12.12.25.24.38.35.21.18.44.35.69.49.44.27.93.48 1.45.62.52.14 1.07.21 1.62.21.55 0 1.1-.07 1.62-.21.52-.14 1.01-.35 1.45-.62.25-.14.48-.31.69-.49.13-.11.26-.23.38-.35.15-.15.38-.15.53 0 .15.15.15.38 0 .53zm1.36-3.29c-.67.67-1.47 1.07-2.35 1.25-.88.18-1.81.13-2.69-.13-.88-.26-1.71-.71-2.42-1.33-.71-.62-1.29-1.39-1.69-2.26-.4-.87-.61-1.83-.61-2.81 0-.98.21-1.94.61-2.81.4-.87.98-1.64 1.69-2.26.71-.62 1.54-1.07 2.42-1.33.88-.26 1.81-.31 2.69-.13.88.18 1.68.58 2.35 1.25.67.67 1.15 1.51 1.41 2.43.26.92.26 1.9 0 2.82-.26.92-.74 1.76-1.41 2.43z"/>
+                                    </svg>
+                                    <span>QQ邮箱</span>
+                                </a>
+                                <a href="https://mail.163.com/" target="_blank" class="email-btn wangyi163-email">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                    </svg>
+                                    <span>163邮箱</span>
+                                </a>
+                                <a href="https://mail.126.com/" target="_blank" class="email-btn wangyi126-email">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                    </svg>
+                                    <span>126邮箱</span>
+                                </a>
+                                <a href="https://mail.google.com/" target="_blank" class="email-btn gmail-email">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                    </svg>
+                                    <span>Gmail</span>
+                                </a>
+                                <a href="https://outlook.live.com/" target="_blank" class="email-btn outlook-email">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                    </svg>
+                                    <span>Outlook</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="format-section">
+                        <div class="section-title">
+                            <div class="icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                                </svg>
+                            </div>
+                            <h3>邮件格式</h3>
+                        </div>
+                        <div class="format-box">
+                            <div class="format-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#64748b">
+                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                                </svg>
+                                <span>请参考以下格式填写邮件</span>
+                            </div>
+                            <div class="format-content">
+                                <div class="format-line">
+                                    <div class="format-label">主题：</div>
+                                    <div class="format-value">网站托管申请 - <span class="format-placeholder">您的项目名称</span></div>
+                                </div>
+                                <div class="format-line">
+                                    <div class="format-label">正文：</div>
+                                    <div class="format-value">项目名称：<span class="format-placeholder">请填写</span></div>
+                                </div>
+                                <div class="format-line">
+                                    <div class="format-label">附件：</div>
+                                    <div class="format-value"><span class="format-placeholder">您的 HTML 文件</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notice-card">
+                        <div class="notice-header">
+                            <div class="notice-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                                </svg>
+                            </div>
+                            <h4>重要提示</h4>
+                        </div>
+                        <ul class="notice-list">
+                            <li>托管申请大约需要 3~5 个工作日处理</li>
+                            <li>法定节假日暂停服务，请合理安排时间</li>
+                            <li>最终托管网址将通过此邮箱发送给您</li>
+                            <li>请确保您的邮箱可以正常接收邮件，避免错过重要通知</li>
+                            <li>💡 域名说明：上传的 HTML 文件名即为子域名名称，如 <code>mywebsite.html</code> 将生成 <code>https://zdp2026.github.io/zhudapituoguan/mywebsite.html</code></li>
+                            <li>⚠️ 文件名建议：请勿使用中文、空格、下划线等特殊字符，否则会被URL编码（如中文变为%XX格式），推荐使用小写字母和连字符（-）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-thanks">
+                <p>感谢您的配合与理解 <span class="heart">♥</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗 -->
+    <div class="modal-overlay" id="copyModal">
+        <div class="modal">
+            <div class="modal-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l6.59-6.59L20 9l-8 8z"/>
+                </svg>
+            </div>
+            <h3>邮箱已复制到剪贴板</h3>
+            <p>您可以直接粘贴到邮件客户端使用</p>
+            <button class="modal-close-btn" onclick="closeCopyModal()">知道了</button>
+        </div>
+    </div>
+
+    <!-- 免责声明弹窗 -->
+    <div class="disclaimer-modal" id="disclaimerModal">
+        <div class="disclaimer-content">
+            <div class="disclaimer-header">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                </svg>
+                <h3>网站免责声明</h3>
+            </div>
+            <div class="disclaimer-body">
+                <div class="disclaimer-section">
+                    <h4>服务性质声明</h4>
+                    <p>本网站完全用于个人开发者之间的技术交流，属于非盈利性质的"为爱发电"项目。该平台旨在帮助开发者无需注册多个云托管账户即可获得免费的子域名托管服务。</p>
+                </div>
+                <div class="disclaimer-section">
+                    <h4>使用限制</h4>
+                    <ul>
+                        <li>所有托管服务仅限个人学习使用，严禁用于商业用途</li>
+                        <li>用户承诺不会将托管服务用于任何商业用途</li>
+                        <li>用户承诺不会传播盗版内容</li>
+                        <li>用户承诺不会将托管服务占为己有</li>
+                        <li>用户在使用前将对代码进行严格审核，确保不包含任何商业侵权或违规内容</li>
+                    </ul>
+                </div>
+                <div class="disclaimer-section">
+                    <h4>内容审核标准</h4>
+                    <p>若用户提交的网页内容包含以下禁止性内容，本网站有权立即拒绝提供云托管服务并删除相关内容：</p>
+                    <ul>
+                        <li>商业政治敏感信息</li>
+                        <li>盗版软件</li>
+                        <li>色情内容</li>
+                        <li>违规商业营销</li>
+                        <li>其他违反法律法规或公序良俗的内容</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="disclaimer-footer">
+                <button class="disclaimer-btn cancel" onclick="closeDisclaimer()">取消</button>
+                <button class="disclaimer-btn agree" onclick="agreeDisclaimer()">同意</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 管理员页面 -->
+    <div class="page admin-page hidden" id="adminPage">
+        <div class="admin-header">
+            <h2>📁 托管文件管理</h2>
+            <p>添加文件到列表，点击即可在新标签页预览</p>
+        </div>
+        
+        <!-- 添加文件 -->
+        <div class="file-input-section">
+            <label>添加托管文件</label>
+            <input type="text" class="file-input" id="fileNameInput" placeholder="输入HTML文件名（如：wallet.html）">
+            <button class="file-add-btn" onclick="addFile()">+ 添加</button>
+        </div>
+        
+        <div class="file-list-container" id="fileListContainer">
+            <!-- 文件列表将通过JS动态生成 -->
+        </div>
+    </div>
+
+    <script>
+        const EMAIL = '3862035628@qq.com';
+        let isFavorited = false;
+        let secretCode = '';
+        let currentLang = 'zh';
+
+        // 检查是否为微信/QQ等内置浏览器
+        function isInAppBrowser() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            return (
+                userAgent.includes('micromessenger') ||  // 微信
+                userAgent.includes('qq') ||              // QQ
+                userAgent.includes('weibo') ||           // 微博
+                userAgent.includes('ucbrowser') ||       // UC浏览器
+                userAgent.includes('qqbrowser') ||       // QQ浏览器
+                userAgent.includes('baiduboxapp') ||     // 百度APP
+                userAgent.includes('douban') ||          // 豆瓣
+                userAgent.includes('zhihu') ||           // 知乎
+                userAgent.includes('xiaohongshu') ||     // 小红书
+                (userAgent.includes('safari') && userAgent.includes('iphone') && !userAgent.includes('chrome')) // iOS内置浏览器
+            );
+        }
+
+        // 显示浏览器检查页面
+        function showBrowserCheck() {
+            if (isInAppBrowser()) {
+                document.getElementById('browserCheckPage').classList.add('show');
+            }
+        }
+
+        // 关闭浏览器检查提示（实际上只是隐藏，不会真正允许访问）
+        function handleBrowserCheckClose() {
+            // 不做任何操作，保持提示显示
+            // 用户必须使用正确的浏览器才能访问
+        }
+
+        // 多语言数据
+        const translations = {
+            zh: {
+                // 首页
+                title: '大皮托管 - 专业Web托管服务',
+                heroTitle: '大皮托管，值得信赖',
+                heroSubtitle: '专业的Web托管服务，让您的网站稳定运行',
+                startBtn: '开始托管',
+                
+                // 收藏页面
+                favoriteTitle: '请先收藏本网站',
+                favoriteDesc: '为了方便您后续访问和管理托管服务，请先将本站添加到收藏夹',
+                waitingFavorite: '等待收藏...',
+                favorited: '✓ 已收藏',
+                shortcutHint: '请使用快捷键收藏：',
+                shortcutAlt: '或右键点击页面 → 选择"添加到收藏夹"',
+                agreeLabel: '我已阅读并同意<a href="javascript:void(0)" onclick="showDisclaimer()">《网站免责声明》</a>',
+                continueBtn: '继续托管',
+                
+                // 托管页面
+                submitTitle: '请提交以下内容',
+                submitDesc: '按照以下格式发送邮件即可完成托管申请',
+                emailSection: '发送至邮箱',
+                recipientLabel: '收件人地址',
+                formatSection: '邮件格式',
+                formatHint: '请参考以下格式填写邮件',
+                formatSubject: '主题：',
+                formatSubjectValue: '网站托管申请 - <span class="format-placeholder">您的项目名称</span>',
+                formatBody: '正文：',
+                formatBodyValue: '项目名称：<span class="format-placeholder">请填写</span>',
+                formatAttachment: '附件：',
+                formatAttachmentValue: '<span class="format-placeholder">您的 HTML 文件</span>',
+                noticeTitle: '重要提示',
+                notice1: '托管申请大约需要 3~5 个工作日处理',
+                notice2: '法定节假日暂停服务，请合理安排时间',
+                notice3: '最终托管网址将通过此邮箱发送给您',
+                notice4: '请确保您的邮箱可以正常接收邮件，避免错过重要通知',
+                thanks: '感谢您的配合与理解 <span class="heart">♥</span>',
+                
+                // 邮箱快捷访问
+                quickAccess: '快捷访问邮箱',
+                
+                // 弹窗
+                copiedTitle: '邮箱已复制到剪贴板',
+                copiedDesc: '您可以直接粘贴到邮件客户端使用',
+                okBtn: '知道了',
+                
+                // 免责声明
+                disclaimerTitle: '网站免责声明',
+                disclaimerService: '服务性质声明',
+                disclaimerServiceText: '本网站完全用于个人开发者之间的技术交流，属于非盈利性质的"为爱发电"项目。该平台旨在帮助开发者无需注册多个云托管账户即可获得免费的子域名托管服务。',
+                disclaimerUsage: '使用限制',
+                disclaimerUsage1: '所有托管服务仅限个人学习使用，严禁用于商业用途',
+                disclaimerUsage2: '用户承诺不会将托管服务用于任何商业用途',
+                disclaimerUsage3: '用户承诺不会传播盗版内容',
+                disclaimerUsage4: '用户承诺不会将托管服务占为己有',
+                disclaimerUsage5: '用户在使用前将对代码进行严格审核，确保不包含任何商业侵权或违规内容',
+                disclaimerContent: '内容审核标准',
+                disclaimerContentText: '若用户提交的网页内容包含以下禁止性内容，本网站有权立即拒绝提供云托管服务并删除相关内容：',
+                disclaimerContent1: '商业政治敏感信息',
+                disclaimerContent2: '盗版软件',
+                disclaimerContent3: '色情内容',
+                disclaimerContent4: '违规商业营销',
+                disclaimerContent5: '其他违反法律法规或公序良俗的内容',
+                cancelBtn: '取消',
+                agreeBtn: '同意',
+                
+                // 提示
+                alertAgree: '请先阅读并同意《网站免责声明》',
+                toastFavorited: '✓ 收藏成功！',
+                toastAgreed: '✓ 已同意免责声明',
+                
+                // 管理员页面
+                adminTitle: '📁 托管文件管理',
+                adminDesc: '点击文件查看预览，复制链接分享给用户',
+                urlLabel: '访问链接',
+                copyUrlBtn: '复制链接',
+                copiedUrlBtn: '✓ 已复制'
+            },
+            en: {
+                // Home page
+                title: 'Dapi Hosting - Professional Web Hosting Service',
+                heroTitle: 'Dapi Hosting, Trustworthy',
+                heroSubtitle: 'Professional web hosting service for your stable website',
+                startBtn: 'Start Hosting',
+                
+                // User Agreement page
+                favoriteTitle: 'Terms of Service & Disclaimer',
+                favoriteDesc: 'Please read and agree to the following terms before using our hosting service',
+                waitingFavorite: '',
+                favorited: '',
+                shortcutHint: '',
+                shortcutAlt: '',
+                agreeLabel: 'I have read and agree to the <a href="javascript:void(0)" onclick="showDisclaimer()">Terms of Service & Disclaimer</a>',
+                continueBtn: 'Continue to Hosting',
+                
+                // Hosting page
+                submitTitle: 'Submit Hosting Request',
+                submitDesc: 'Send an email following the format below to complete your hosting application',
+                emailSection: 'Send Email To',
+                recipientLabel: 'Recipient Address',
+                formatSection: 'Email Format',
+                formatHint: 'Please follow this format:',
+                formatSubject: 'Subject:',
+                formatSubjectValue: 'Web Hosting Request - <span class="format-placeholder">Your Project Name</span>',
+                formatBody: 'Body:',
+                formatBodyValue: 'Project Name: <span class="format-placeholder">Enter your project name</span>',
+                formatAttachment: 'Attachment:',
+                formatAttachmentValue: '<span class="format-placeholder">Your HTML file</span>',
+                noticeTitle: 'Important Notes',
+                notice1: 'Hosting requests take 3-5 business days to process',
+                notice2: 'Service suspended during public holidays',
+                notice3: 'Your hosting URL will be sent via email',
+                notice4: 'Please ensure your email is valid',
+                notice5: '💡 Domain: Your HTML filename becomes your subdomain, e.g. <code>mywebsite.html</code> → <code>https://zdp2026.github.io/zhudapituoguan/mywebsite.html</code>',
+                notice6: '⚠️ Filename tips: Avoid Chinese, spaces, underscores. Use lowercase letters and hyphens (-) instead.',
+                thanks: 'Thank you for your cooperation <span class="heart">♥</span>',
+                
+                // Quick access
+                quickAccess: 'Quick Email Access',
+                
+                // Modal
+                copiedTitle: 'Email Copied',
+                copiedDesc: 'Email address has been copied to clipboard',
+                okBtn: 'Got it',
+                
+                // Disclaimer
+                disclaimerTitle: 'Terms of Service & Disclaimer',
+                disclaimerService: 'Service Description',
+                disclaimerServiceText: 'This website is designed for technical communication among individual developers. It is a non-profit, community-driven project dedicated to providing free subdomain hosting services without requiring users to register multiple cloud hosting accounts.',
+                disclaimerUsage: 'Usage Policy',
+                disclaimerUsage1: 'All hosting services are for personal educational use only. Commercial use is strictly prohibited.',
+                disclaimerUsage2: 'Users must not use the service for any commercial purposes.',
+                disclaimerUsage3: 'Users must not distribute pirated content or illegal materials.',
+                disclaimerUsage4: 'Users must not claim ownership of this hosting service.',
+                disclaimerUsage5: 'Users are responsible for reviewing their content before submission.',
+                disclaimerContent: 'Content Guidelines',
+                disclaimerContentText: 'If submitted content contains any prohibited materials listed below, this website reserves the right to immediately reject hosting requests and remove related content:',
+                disclaimerContent1: 'Commercial or politically sensitive content',
+                disclaimerContent2: 'Pirated software or copyrighted material',
+                disclaimerContent3: 'Pornographic or explicit content',
+                disclaimerContent4: 'Illegal advertising or spam',
+                disclaimerContent5: 'Other content violating laws, regulations, or public order',
+                cancelBtn: 'Cancel',
+                agreeBtn: 'Agree',
+                
+                // Alerts
+                alertAgree: 'Please read and agree to the User Agreement first',
+                toastFavorited: '',
+                toastAgreed: '✓ Agreement accepted',
+                
+                // Admin page
+                adminTitle: '📁 Hosting File Management',
+                adminDesc: 'Click file to preview',
+                urlLabel: 'Access Link',
+                copyUrlBtn: 'Copy Link',
+                copiedUrlBtn: '✓ Copied'
+            }
+        };
+
+        // 切换语言菜单显示/隐藏
+        function toggleLangMenu() {
+            const menu = document.getElementById('langMenu');
+            menu.classList.toggle('show');
+        }
+
+        // 点击其他地方关闭语言菜单
+        document.addEventListener('click', (e) => {
+            const langSwitch = document.querySelector('.lang-switch');
+            const langMenu = document.getElementById('langMenu');
+            if (!langSwitch.contains(e.target)) {
+                langMenu.classList.remove('show');
+            }
+        });
+
+        // 切换语言
+        function switchLanguage(lang) {
+            currentLang = lang;
+            
+            // 更新按钮状态
+            document.getElementById('langZh').classList.toggle('active', lang === 'zh');
+            document.getElementById('langEn').classList.toggle('active', lang === 'en');
+            
+            // 更新页面标题
+            document.title = translations[lang].title;
+            
+            // 更新首页
+            document.querySelector('.page1 h1').textContent = translations[lang].heroTitle;
+            document.querySelector('.page1 .subtitle').textContent = translations[lang].heroSubtitle;
+            document.querySelector('.start-btn').textContent = translations[lang].startBtn;
+            
+            // 更新收藏页面
+            document.querySelector('.favorite-card h2').textContent = translations[lang].favoriteTitle;
+            document.querySelector('.favorite-card > p').textContent = translations[lang].favoriteDesc;
+            document.getElementById('favoriteText').textContent = isFavorited ? translations[lang].favorited : translations[lang].waitingFavorite;
+            document.querySelector('.shortcut-box p').textContent = translations[lang].shortcutHint;
+            document.querySelector('.hint-text').textContent = translations[lang].shortcutAlt;
+            document.querySelector('.agree-checkbox label').innerHTML = translations[lang].agreeLabel;
+            document.getElementById('continueBtn').textContent = translations[lang].continueBtn;
+            
+            // 更新托管页面
+            document.querySelector('.card-header h2').textContent = translations[lang].submitTitle;
+            document.querySelector('.card-header p').textContent = translations[lang].submitDesc;
+            
+            // 更新邮箱部分
+            const sectionTitles = document.querySelectorAll('.section-title h3');
+            if (sectionTitles[0]) sectionTitles[0].textContent = translations[lang].emailSection;
+            if (sectionTitles[1]) sectionTitles[1].textContent = translations[lang].formatSection;
+            
+            document.querySelector('.email-label').textContent = translations[lang].recipientLabel;
+            document.querySelector('.format-header span').textContent = translations[lang].formatHint;
+            
+            const formatLines = document.querySelectorAll('.format-line');
+            if (formatLines[0]) {
+                formatLines[0].querySelector('.format-label').textContent = translations[lang].formatSubject;
+                formatLines[0].querySelector('.format-value').innerHTML = translations[lang].formatSubjectValue;
+            }
+            if (formatLines[1]) {
+                formatLines[1].querySelector('.format-label').textContent = translations[lang].formatBody;
+                formatLines[1].querySelector('.format-value').innerHTML = translations[lang].formatBodyValue;
+            }
+            if (formatLines[2]) {
+                formatLines[2].querySelector('.format-label').textContent = translations[lang].formatAttachment;
+                formatLines[2].querySelector('.format-value').innerHTML = translations[lang].formatAttachmentValue;
+            }
+            
+            // 更新重要提示
+            document.querySelector('.notice-header h4').textContent = translations[lang].noticeTitle;
+            const noticeItems = document.querySelectorAll('.notice-list li');
+            if (noticeItems[0]) noticeItems[0].textContent = translations[lang].notice1;
+            if (noticeItems[1]) noticeItems[1].textContent = translations[lang].notice2;
+            if (noticeItems[2]) noticeItems[2].textContent = translations[lang].notice3;
+            if (noticeItems[3]) noticeItems[3].textContent = translations[lang].notice4;
+            if (noticeItems[4]) noticeItems[4].innerHTML = translations[lang].notice5;
+            if (noticeItems[5]) noticeItems[5].innerHTML = translations[lang].notice6;
+            
+            // 更新感谢
+            document.querySelector('.footer-thanks p').innerHTML = translations[lang].thanks;
+            
+            // 更新邮箱快捷访问
+            document.querySelector('.shortcuts-title span').textContent = translations[lang].quickAccess;
+            
+            // 更新复制弹窗
+            document.querySelector('.modal h3').textContent = translations[lang].copiedTitle;
+            document.querySelector('.modal p').textContent = translations[lang].copiedDesc;
+            document.querySelector('.modal-close-btn').textContent = translations[lang].okBtn;
+            
+            // 更新免责声明弹窗
+            document.querySelector('.disclaimer-header h3').textContent = translations[lang].disclaimerTitle;
+            const disclaimerSections = document.querySelectorAll('.disclaimer-section');
+            if (disclaimerSections[0]) {
+                disclaimerSections[0].querySelector('h4').textContent = translations[lang].disclaimerService;
+                disclaimerSections[0].querySelector('p').textContent = translations[lang].disclaimerServiceText;
+            }
+            if (disclaimerSections[1]) {
+                disclaimerSections[1].querySelector('h4').textContent = translations[lang].disclaimerUsage;
+                const usageItems = disclaimerSections[1].querySelectorAll('li');
+                if (usageItems[0]) usageItems[0].textContent = translations[lang].disclaimerUsage1;
+                if (usageItems[1]) usageItems[1].textContent = translations[lang].disclaimerUsage2;
+                if (usageItems[2]) usageItems[2].textContent = translations[lang].disclaimerUsage3;
+                if (usageItems[3]) usageItems[3].textContent = translations[lang].disclaimerUsage4;
+                if (usageItems[4]) usageItems[4].textContent = translations[lang].disclaimerUsage5;
+            }
+            if (disclaimerSections[2]) {
+                disclaimerSections[2].querySelector('h4').textContent = translations[lang].disclaimerContent;
+                const contentPs = disclaimerSections[2].querySelectorAll('p');
+                if (contentPs[0]) contentPs[0].textContent = translations[lang].disclaimerContentText;
+                const contentItems = disclaimerSections[2].querySelectorAll('li');
+                if (contentItems[0]) contentItems[0].textContent = translations[lang].disclaimerContent1;
+                if (contentItems[1]) contentItems[1].textContent = translations[lang].disclaimerContent2;
+                if (contentItems[2]) contentItems[2].textContent = translations[lang].disclaimerContent3;
+                if (contentItems[3]) contentItems[3].textContent = translations[lang].disclaimerContent4;
+                if (contentItems[4]) contentItems[4].textContent = translations[lang].disclaimerContent5;
+            }
+            
+            // 更新免责声明按钮
+            const disclaimerBtns = document.querySelectorAll('.disclaimer-btn');
+            if (disclaimerBtns[0]) disclaimerBtns[0].textContent = translations[lang].cancelBtn;
+            if (disclaimerBtns[1]) disclaimerBtns[1].textContent = translations[lang].agreeBtn;
+            
+            // 更新管理员页面
+            document.querySelector('.admin-header h2').textContent = translations[lang].adminTitle;
+            document.querySelector('.admin-header p').textContent = translations[lang].adminDesc;
+            document.querySelector('.copy-url-section label').textContent = translations[lang].urlLabel;
+            const copyUrlBtn = document.getElementById('copyUrlBtn');
+            if (copyUrlBtn && !copyUrlBtn.classList.contains('copied')) {
+                copyUrlBtn.textContent = translations[lang].copyUrlBtn;
+            }
+            
+            // 保存语言偏好
+            localStorage.setItem('preferredLang', lang);
+            
+            // 关闭语言菜单
+            document.getElementById('langMenu').classList.remove('show');
+        }
+
+        // 从本地存储获取文件列表
+        function getFiles() {
+            const saved = localStorage.getItem('hostedFiles');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            // 默认只有 index.html
+            return [{ name: 'index.html', size: '2.3 KB', url: '/index.html' }];
+        }
+
+        // 保存文件列表到本地存储
+        function saveFiles(files) {
+            localStorage.setItem('hostedFiles', JSON.stringify(files));
+        }
+
+        // 添加文件
+        function addFile() {
+            const fileName = document.getElementById('fileNameInput').value.trim();
+            if (!fileName) {
+                alert('请输入文件名');
+                return;
+            }
+            // 确保文件名以 .html 结尾
+            const finalName = fileName.endsWith('.html') ? fileName : fileName + '.html';
+            
+            const files = getFiles();
+            // 检查是否已存在
+            if (files.some(f => f.name === finalName)) {
+                alert('文件已存在');
+                return;
+            }
+            
+            // 添加新文件
+            files.push({ 
+                name: finalName, 
+                size: '未知', 
+                url: '/' + finalName 
+            });
+            saveFiles(files);
+            loadFileList();
+            document.getElementById('fileNameInput').value = '';
+        }
+
+        // 删除文件
+        function removeFile(fileName) {
+            if (fileName === 'index.html') {
+                alert('不能删除主页文件');
+                return;
+            }
+            let files = getFiles();
+            files = files.filter(f => f.name !== fileName);
+            saveFiles(files);
+            loadFileList();
+        }
+
+        // 首页 -> 收藏页面
+        function showFavoritePage() {
+            document.getElementById('page1').classList.add('hidden');
+            document.getElementById('pageFavorite').classList.remove('hidden');
+            document.getElementById('backBtn').classList.add('visible');
+            
+            isFavorited = false;
+            updateFavoriteStatus(false);
+        }
+
+        // 收藏页面 -> 托管页面
+        function showPage2() {
+            document.getElementById('pageFavorite').classList.add('hidden');
+            document.getElementById('page2').classList.remove('hidden');
+            document.getElementById('backBtn').classList.add('visible');
+            
+            // 自动复制邮箱到剪贴板并显示弹窗
+            copyEmailToClipboard();
+        }
+
+        // 处理继续托管按钮点击
+        function handleContinue() {
+            const agreeCheckbox = document.getElementById('agreeCheckbox');
+            
+            if (!agreeCheckbox.checked) {
+                alert(translations[currentLang].alertAgree);
+                return;
+            }
+            
+            showPage2();
+        }
+
+        // 显示免责声明弹窗
+        function showDisclaimer() {
+            document.getElementById('disclaimerModal').classList.add('show');
+        }
+
+        // 关闭免责声明弹窗
+        function closeDisclaimer() {
+            document.getElementById('disclaimerModal').classList.remove('show');
+        }
+
+        // 同意免责声明
+        function agreeDisclaimer() {
+            document.getElementById('agreeCheckbox').checked = true;
+            document.getElementById('disclaimerModal').classList.remove('show');
+            
+            // 显示同意成功提示
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #22c55e;
+                color: white;
+                padding: 15px 30px;
+                border-radius: 10px;
+                font-size: 1rem;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                z-index: 2000;
+                animation: fadeInUp 0.3s ease;
+            `;
+            toast.textContent = translations[currentLang].toastAgreed;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+
+        // 返回首页
+        function showPage1() {
+            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
+            document.getElementById('page1').classList.remove('hidden');
+            document.getElementById('backBtn').classList.remove('visible');
+            document.getElementById('copyUrlSection').classList.add('hidden');
+            secretCode = '';
+        }
+
+        // 更新收藏状态（保留兼容）
+        function updateFavoriteStatus(favorited) {
+            const continueBtn = document.getElementById('continueBtn');
+            if (favorited) {
+                continueBtn.classList.add('enabled');
+                isFavorited = true;
+            } else {
+                continueBtn.classList.remove('enabled');
+                isFavorited = false;
+            }
+        }
+
+        // 监听协议复选框变化
+        function setupAgreeListener() {
+            const agreeCheckbox = document.getElementById('agreeCheckbox');
+            const continueBtn = document.getElementById('continueBtn');
+            
+            agreeCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    continueBtn.classList.add('enabled');
+                } else {
+                    continueBtn.classList.remove('enabled');
+                }
+            });
+        }
+
+        // 复制邮箱到剪贴板
+        function copyEmailToClipboard() {
+            navigator.clipboard.writeText(EMAIL).then(() => {
+                document.getElementById('copyModal').classList.add('show');
+            }).catch(err => {
+                console.error('复制失败:', err);
+            });
+        }
+
+        // 关闭弹窗
+        function closeCopyModal() {
+            document.getElementById('copyModal').classList.remove('show');
+        }
+
+        // 键盘快捷键监听
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+D 或 Cmd+D 收藏
+            if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                e.preventDefault();
+                if (document.getElementById('pageFavorite').classList.contains('hidden') === false) {
+                    updateFavoriteStatus(true);
+                    
+                    // 显示收藏成功提示
+                    const toast = document.createElement('div');
+                    toast.style.cssText = `
+                        position: fixed;
+                        bottom: 30px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: #22c55e;
+                        color: white;
+                        padding: 15px 30px;
+                        border-radius: 10px;
+                        font-size: 1rem;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                        z-index: 2000;
+                        animation: fadeInUp 0.3s ease;
+                    `;
+                    toast.textContent = translations[currentLang].toastFavorited;
+                    document.body.appendChild(toast);
+                    
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 2000);
+                }
+            }
+
+            // ESC键返回
+            if (e.key === 'Escape') {
+                if (!document.getElementById('page1').classList.contains('hidden')) {
+                    // 在首页按ESC，显示退出提示
+                    alert('按 ESC 键无法退出首页');
+                } else if (!document.getElementById('adminPage').classList.contains('hidden')) {
+                    // 管理员页面按ESC返回首页
+                    showPage1();
+                } else {
+                    // 其他页面按ESC返回首页
+                    showPage1();
+                }
+            }
+
+            // 管理员密码输入（输入"123"进入管理员页面）
+            if (!document.getElementById('adminPage').classList.contains('hidden')) {
+                return; // 已经在管理员页面
+            }
+            
+            if (e.key >= '0' && e.key <= '9') {
+                secretCode += e.key;
+                
+                if (secretCode.length > 3) {
+                    secretCode = secretCode.slice(-3); // 只保留最后3位
+                }
+                
+                if (secretCode === '123') {
+                    showAdminPage();
+                    secretCode = '';
+                }
+            } else if (e.key === 'Backspace') {
+                secretCode = secretCode.slice(0, -1);
+            } else if (!['Tab', 'Shift', 'Ctrl', 'Meta', 'Alt', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                secretCode = ''; // 非数字键重置
+            }
+        });
+
+        // 显示管理员页面
+        function showAdminPage() {
+            document.querySelectorAll('.page').forEach(page => page.classList.add('hidden'));
+            document.getElementById('adminPage').classList.remove('hidden');
+            document.getElementById('backBtn').classList.add('visible');
+            
+            // 生成文件列表
+            generateFileList();
+        }
+
+        // 生成文件列表
+        function generateFileList() {
+            const container = document.getElementById('fileListContainer');
+            const files = getFiles();
+            container.innerHTML = files.map(file => `
+                <div class="file-card">
+                    <div class="file-info" onclick="selectFile('${file.url}', '${file.name}')">
+                        <div class="file-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${file.size}</div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        ${file.name !== 'index.html' ? `<button class="delete-btn" onclick="removeFile('${file.name}')">删除</button>` : ''}
+                        <span class="arrow" onclick="selectFile('${file.url}', '${file.name}')">→</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 选择文件 - 直接在新标签页打开
+        function selectFile(url, name) {
+            // 获取当前页面的基础路径（支持子目录部署）
+            const currentPath = window.location.pathname;
+            const basePath = currentPath.substring(0, currentPath.lastIndexOf('/') + 1);
+            const fullUrl = window.location.origin + basePath + url.replace('/', '');
+            // 在新标签页打开文件
+            window.open(fullUrl, '_blank');
+        }
+
+        // 手动输入文件名访问（已废弃，保留兼容）
+        function accessFile() {
+            addFile();
+        }
+
+        // 复制链接
+        function copyUrl() {
+            const url = document.getElementById('urlInput').value;
+            navigator.clipboard.writeText(url).then(() => {
+                const btn = document.getElementById('copyUrlBtn');
+                btn.textContent = translations[currentLang].copiedUrlBtn;
+                btn.classList.add('copied');
+            }).catch(err => {
+                console.error('复制失败:', err);
+            });
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 检查浏览器（必须放在最前面）
+            showBrowserCheck();
+            
+            // 检查保存的语言偏好
+            const savedLang = localStorage.getItem('preferredLang');
+            if (savedLang && savedLang !== currentLang) {
+                switchLanguage(savedLang);
+            }
+            
+            // 设置协议复选框监听
+            setupAgreeListener();
+            
+            // 添加ESC键关闭弹窗
+            document.getElementById('copyModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('copyModal')) {
+                    closeCopyModal();
+                }
+            });
+            
+            // 点击免责声明弹窗背景关闭
+            document.getElementById('disclaimerModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('disclaimerModal')) {
+                    closeDisclaimer();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
